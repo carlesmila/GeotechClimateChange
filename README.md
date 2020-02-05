@@ -1,4 +1,4 @@
-# GeotechClimateChange
+# Group project: Climate Change
 Repo to work on the Geotech group project.
 
 Next steps:
