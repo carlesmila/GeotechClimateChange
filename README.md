@@ -7,3 +7,6 @@ Next steps:
 3. Make exploratory plots
   * Monthly time series
   * Yearly maps
+  
+  Example with same data:
+http://schubert.atmos.colostate.edu/~cslocum/netcdf_example.html
