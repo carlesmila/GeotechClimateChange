@@ -20,7 +20,6 @@ countries_data = [go.Scatter( x = poly[0], y = poly[1], mode = 'lines',
 con = sqlite3.connect("Database/database.sqlite")
 df = pd.read_sql_query("SELECT * from MAINTEMP", con)
 con.close()
-# df = pd.read_csv("Database/database.csv")
 
 # this is just a pretty container and its kinda html
 pretty_container={'border-radius': '5px', 'background-color': '#f9f9f9', 'margin': '10px', 'padding': '15px',

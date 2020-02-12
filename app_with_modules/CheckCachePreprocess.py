@@ -7,11 +7,12 @@ import os
 import pandas as pd
 from netCDF4 import Dataset, num2date
 
-# First, check cache. Check if the database already exists
+# First, check cache. Check if the database already exists, if yes don't do anything
 if os.path.isfile('Database/database.sqlite'):
     print("The database is cached, preprocessing is skipped!")
 
 else:
+    # Otherwise process data and create it
     print("Running pre-processing...")
 
     # Read NetCDF
@@ -41,6 +42,16 @@ else:
     df = df.groupby(['lon','lat','year']).mean().reset_index()
     df = df[df.year != 2020]
 
+    # Calculate mean temperatures of the first 5 years
+    baseline = df[df.year<=1952].groupby(['lon','lat']).mean().reset_index()
+    baseline = baseline.drop(columns="year")
+    baseline= baseline.rename(columns={"Air":"baseline"})
+    
+    # Merge with main table and compute anomalies
+    df = pd.merge(left=df, right=baseline, left_on=['lon','lat'], right_on=['lon','lat'])
+    df['anom'] =  (df['Air'] - df['baseline'] )
+    df = df.drop(columns="baseline")
+
     # If the folder of the database does not exist, create it
     if not os.path.exists("Database"):
         os.makedirs("Database")
@@ -49,7 +60,7 @@ else:
     conn = sqlite3.connect('Database/database.sqlite')
     c = conn.cursor()
     c.execute('''CREATE TABLE MAINTEMP
-                 ([generated_id] INTEGER PRIMARY KEY,[lon] FLOAT, [lat] integer, [year] INTEGER, [Air] FLOAT)''')
+                 ([generated_id] INTEGER PRIMARY KEY,[lon] FLOAT, [lat] integer, [year] INTEGER, [Air] FLOAT, [anom] FLOAT)''')
     df.to_sql('MAINTEMP', conn, if_exists='replace', index=False)
     conn.commit()
 
