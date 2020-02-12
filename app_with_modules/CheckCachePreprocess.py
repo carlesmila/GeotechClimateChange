@@ -5,7 +5,6 @@
 import sqlite3
 import os
 import pandas as pd
-import numpy as np
 from netCDF4 import Dataset, num2date
 
 # First, check cache. Check if the database already exists
@@ -15,23 +14,21 @@ if os.path.isfile('Database/database.sqlite'):
 else:
     print("Running pre-processing...")
 
-    # Pre-processing
+    # Read NetCDF
     file = 'Data/air.mon.mean.nc'
     nc = Dataset(file, mode='r')
     lat = nc.variables['lat'][:]
     lon = nc.variables['lon'][:]
     air = nc.variables['air'][:]
     time_var = nc.variables['time']
+
+    # We need to parse the time (extract year from months)
     dtime = num2date(time_var[:], time_var.units)
-    tmp_lon = np.array([lon[n]-360 if l>=180 else lon[n]
-                   for n,l in enumerate(lon)])  # => [0,180]U[-180,2.5]
-    i_east, = np.where(tmp_lon>=0)
-    i_west, = np.where(tmp_lon<0)
-    lon = np.hstack((tmp_lon[i_west], tmp_lon[i_east]))
     year = [row.year for row in dtime]
     names = ['year', 'lat', 'lon']
-    lon2 = nc.variables['lon'][:]
-    index = pd.MultiIndex.from_product([year, lat, lon2], names=names)
+
+    # We convert to pandas df and fix the longitudes (from -180 to 180)
+    index = pd.MultiIndex.from_product([year, lat, lon], names=names)
     df = pd.DataFrame({'Air': air.flatten()}, index=index).reset_index()
     def convert_lons(l):
         if l > 180:
@@ -39,10 +36,12 @@ else:
         else:
             return l
     df.lon = df.lon.transform(convert_lons)
+
+    # We calculate yearly averages per pixel and discard data for 2020
     df = df.groupby(['lon','lat','year']).mean().reset_index()
     df = df[df.year != 2020]
 
-    # If the folder does not exist, create it
+    # If the folder of the database does not exist, create it
     if not os.path.exists("Database"):
         os.makedirs("Database")
 
@@ -50,10 +49,9 @@ else:
     conn = sqlite3.connect('Database/database.sqlite')
     c = conn.cursor()
     c.execute('''CREATE TABLE MAINTEMP
-                 ([generated_id] INTEGER PRIMARY KEY,[lon] FLOAT, [lat] integer, [year] INTEGER, [air] FLOAT)''')
+                 ([generated_id] INTEGER PRIMARY KEY,[lon] FLOAT, [lat] integer, [year] INTEGER, [Air] FLOAT)''')
     df.to_sql('MAINTEMP', conn, if_exists='replace', index=False)
     conn.commit()
 
-    # df.to_csv('Database/database.csv')
-
+    # We're done!
     print('Data preprocessed and database created!')
