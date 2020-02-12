@@ -24,4 +24,4 @@ import CheckCachePreprocess
 import DefineApp
 
 ## 3. Time to run the app!
-DefineApp.app.run_server(debug=True)
+DefineApp.app.run_server(debug=False)

@@ -9,12 +9,18 @@ import numpy as np
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
+import sqlite3
 
 # Read input data for app
 basemap = np.load('Data/basemap.npy', allow_pickle = True)
 countries_data = [go.Scatter( x = poly[0], y = poly[1], mode = 'lines',
                             marker = dict (color='black')) for poly in basemap]
-df = pd.read_csv("Database/database.csv")
+
+# Query database
+con = sqlite3.connect("Database/database.sqlite")
+df = pd.read_sql_query("SELECT * from MAINTEMP", con)
+con.close()
+# df = pd.read_csv("Database/database.csv")
 
 # this is just a pretty container and its kinda html
 pretty_container={'border-radius': '5px', 'background-color': '#f9f9f9', 'margin': '10px', 'padding': '15px',
