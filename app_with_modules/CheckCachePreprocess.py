@@ -5,6 +5,7 @@
 import sqlite3
 import os
 import pandas as pd
+import geopandas as gpd
 from netCDF4 import Dataset, num2date
 
 # First, check cache. Check if the database already exists, if yes don't do anything
@@ -49,19 +50,42 @@ else:
     
     # Merge with main table and compute anomalies
     df = pd.merge(left=df, right=baseline, left_on=['lon','lat'], right_on=['lon','lat'])
-    df['anom'] =  (df['Air'] - df['baseline'] )
+    df['anom'] = (df['Air'] - df['baseline'] )
     df = df.drop(columns="baseline")
+
+    # Let's derive pixel-based indicators. First get the coordinates data frame and convert to geopandas.
+    dfsupp = df[df.year == 1948].loc[:, ['lon', 'lat']]
+    dfsupp = gpd.GeoDataFrame(dfsupp,
+                              geometry=gpd.points_from_xy(dfsupp.lon, dfsupp.lat),
+                              crs={'init': 'epsg:4326'})
+
+    # Read country data, select and rename country names, and do spatial join to extract the country of the pixel
+    country = gpd.read_file('Data/countries.geojson').loc[:, ['NAME_EN', 'geometry']]
+    country = country.rename(columns={'NAME_EN': 'countryname'})
+    dfsupp = gpd.sjoin(dfsupp, country, how='left').loc[:, ['lon', 'lat', 'countryname', 'geometry']]
+    dfsupp.countryname = dfsupp.countryname.fillna('Water body')
+
+    # Next, let's add climate zones
+    climatezones = gpd.read_file('Data/climatezones.geojson')
+    dfsupp = gpd.sjoin(dfsupp, climatezones, how='left').loc[:, ['lon', 'lat', 'countryname', 'climate']]
+    dfsupp = dfsupp.drop_duplicates(subset=['lon', 'lat'], keep='last')
+
+    print(dfsupp)
+    print(dfsupp.shape)
 
     # If the folder of the database does not exist, create it
     if not os.path.exists("Database"):
         os.makedirs("Database")
 
-    # Write database
+    # Write database: Two tables, main and supp
     conn = sqlite3.connect('Database/database.sqlite')
     c = conn.cursor()
     c.execute('''CREATE TABLE MAINTEMP
                  ([generated_id] INTEGER PRIMARY KEY,[lon] FLOAT, [lat] integer, [year] INTEGER, [Air] FLOAT, [anom] FLOAT)''')
     df.to_sql('MAINTEMP', conn, if_exists='replace', index=False)
+    c.execute('''CREATE TABLE SUPPTEMP
+                     ([generated_id] INTEGER PRIMARY KEY,[lon] FLOAT, [lat] integer, [countryname] STRING, [climatezone] STRING)''')
+    dfsupp.to_sql('SUPPTEMP', conn, if_exists='replace', index=False)
     conn.commit()
 
     # We're done!
