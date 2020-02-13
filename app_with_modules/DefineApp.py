@@ -18,7 +18,7 @@ countries_data = [go.Scatter( x = poly[0], y = poly[1], mode = 'lines',
 
 # Query database
 con = sqlite3.connect("Database/database.sqlite")
-df = pd.read_sql_query("SELECT * from MAINTEMP", con)
+df = pd.read_sql_query("SELECT * from TEMPTAB", con)
 con.close()
 
 # this is just a pretty container and its kinda html
@@ -73,7 +73,7 @@ app.layout = html.Div([  # this html.Div is a list of things
             [Input('year_slider', 'value')])
 #now we define a function that takes the year and create a figure. we put just one input:the chosen_year
 def raster_plot(chosen_year): #and we copy all we did on jupyter
-    raster = df[df.year == chosen_year].sort_values(by=['lat', 'lon'], ascending=True).Air.to_numpy()
+    raster = df[df.year == chosen_year].sort_values(by=['lat', 'lon'], ascending=True).temp.to_numpy()
     raster = np.reshape(raster, (-1, 144))
     lon = df[df.year == chosen_year].lon.to_numpy()
     lon = np.unique(lon)
@@ -129,7 +129,7 @@ def update_lines(clickData, chosen_year): #here I write again the inputs. they c
     # we need to do something that checks is the user clicked on some value -> I get my output.
     # if the user still hasnt clicker -> than I get a predefined value
     plot_data = df[(df['lon'] == chosen_lon) & (df['lat'] == chosen_lat)]
-    data = go.Scatter(x=plot_data['year'], y=plot_data['Air'])
+    data = go.Scatter(x=plot_data['year'], y=plot_data['temp'])
 
     # this line adds an xaxis and a yaxis. we can change it
     layout = go.Layout(xaxis=dict(title='Years'), yaxis=dict(title='Average Yearly Air temperature ºC'),

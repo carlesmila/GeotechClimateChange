@@ -6,73 +6,32 @@ import sqlite3
 import os
 import pandas as pd
 import geopandas as gpd
-from netCDF4 import Dataset, num2date
 
 # First, check cache. Check if the database already exists, if yes don't do anything
 if os.path.isfile('Database/database.sqlite'):
     print("The database is cached, preprocessing is skipped!")
 
 else:
-    # Otherwise process data and create it
-    print("Running pre-processing...")
+    # Otherwise process data
+    print("Cache not found, running pre-processing...")
 
-    # Read NetCDF
-    file = 'Data/air.mon.mean.nc'
-    nc = Dataset(file, mode='r')
-    lat = nc.variables['lat'][:]
-    lon = nc.variables['lon'][:]
-    air = nc.variables['air'][:]
-    time_var = nc.variables['time']
+    # Process temperature
+    print("1. Processing temperature data. This may take a while.")
+    import PreprocessTemp as ptemp
 
-    # We need to parse the time (extract year from months)
-    dtime = num2date(time_var[:], time_var.units)
-    year = [row.year for row in dtime]
-    names = ['year', 'lat', 'lon']
+    # Process precipitation
+    print("2. Processing precipitation data. This may take a while.")
 
-    # We convert to pandas df and fix the longitudes (from -180 to 180)
-    index = pd.MultiIndex.from_product([year, lat, lon], names=names)
-    df = pd.DataFrame({'Air': air.flatten()}, index=index).reset_index()
-    def convert_lons(l):
-        if l > 180:
-            return l - 360
-        else:
-            return l
-    df.lon = df.lon.transform(convert_lons)
+    # Derive pixel-based common indicators
+    print("3. Processing pixel-based common indicators")
+    import PreprocessCommon as pcom
 
-    # We calculate yearly averages per pixel and discard data for 2020
-    df = df.groupby(['lon','lat','year']).mean().reset_index()
-    df = df[df.year != 2020]
+    # Merge tables and make them ready to be uploaded
+    print("4. Merging tables")
+    dfshort = pd.merge(left=pcom.dfu, right=ptemp.temptrends, left_on=['lon', 'lat'], right_on=['lon', 'lat'])
 
-    # Calculate mean temperatures of the first 5 years
-    baseline = df[df.year<=1952].groupby(['lon','lat']).mean().reset_index()
-    baseline = baseline.drop(columns="year")
-    baseline= baseline.rename(columns={"Air":"baseline"})
-    
-    # Merge with main table and compute anomalies
-    df = pd.merge(left=df, right=baseline, left_on=['lon','lat'], right_on=['lon','lat'])
-    df['anom'] = (df['Air'] - df['baseline'] )
-    df = df.drop(columns="baseline")
-
-    # Let's derive pixel-based indicators. First get the coordinates data frame and convert to geopandas.
-    dfsupp = df[df.year == 1948].loc[:, ['lon', 'lat']]
-    dfsupp = gpd.GeoDataFrame(dfsupp,
-                              geometry=gpd.points_from_xy(dfsupp.lon, dfsupp.lat),
-                              crs={'init': 'epsg:4326'})
-
-    # Read country data, select and rename country names, and do spatial join to extract the country of the pixel
-    country = gpd.read_file('Data/countries.geojson').loc[:, ['NAME_EN', 'geometry']]
-    country = country.rename(columns={'NAME_EN': 'countryname'})
-    dfsupp = gpd.sjoin(dfsupp, country, how='left').loc[:, ['lon', 'lat', 'countryname', 'geometry']]
-    dfsupp.countryname = dfsupp.countryname.fillna('Water body')
-
-    # Next, let's add climate zones
-    climatezones = gpd.read_file('Data/climatezones.geojson')
-    dfsupp = gpd.sjoin(dfsupp, climatezones, how='left').loc[:, ['lon', 'lat', 'countryname', 'climate']]
-    dfsupp = dfsupp.drop_duplicates(subset=['lon', 'lat'], keep='last')
-
-    print(dfsupp)
-    print(dfsupp.shape)
-
+    # Create database
+    print("5. Creating database")
     # If the folder of the database does not exist, create it
     if not os.path.exists("Database"):
         os.makedirs("Database")
@@ -80,13 +39,16 @@ else:
     # Write database: Two tables, main and supp
     conn = sqlite3.connect('Database/database.sqlite')
     c = conn.cursor()
-    c.execute('''CREATE TABLE MAINTEMP
-                 ([generated_id] INTEGER PRIMARY KEY,[lon] FLOAT, [lat] integer, [year] INTEGER, [Air] FLOAT, [anom] FLOAT)''')
-    df.to_sql('MAINTEMP', conn, if_exists='replace', index=False)
-    c.execute('''CREATE TABLE SUPPTEMP
-                     ([generated_id] INTEGER PRIMARY KEY,[lon] FLOAT, [lat] integer, [countryname] STRING, [climatezone] STRING)''')
-    dfsupp.to_sql('SUPPTEMP', conn, if_exists='replace', index=False)
+    c.execute('''CREATE TABLE TEMPTAB
+                 ([generated_id] INTEGER PRIMARY KEY,[lon] FLOAT, 
+                 [lat] integer, [year] INTEGER, [temp] FLOAT, [tempanom] FLOAT)''')
+    ptemp.dft.to_sql('TEMPTAB', conn, if_exists='replace', index=False)
+    c.execute('''CREATE TABLE FIXEDTAB
+                     ([generated_id] INTEGER PRIMARY KEY,[lon] FLOAT, [lat] integer, 
+                     [countryname] STRING, [climatezone] STRING,
+                     [tempconstant] FLOAT, [tempslope] FLOAT, [temptrend] STRING)''')
+    dfshort.to_sql('FIXEDTAB', conn, if_exists='replace', index=False)
     conn.commit()
 
     # We're done!
-    print('Data preprocessed and database created!')
+    print('Data preprocessed and database created! :)')
