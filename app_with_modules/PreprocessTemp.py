@@ -42,7 +42,7 @@ dft['tempanom'] = (dft['temp'] - dft['baseline'])
 dft = dft.drop(columns="baseline")
 
 # Now we compute trends
-temptrends = dft.groupby(['lat', 'lon']).apply(ut.extract_trend).reset_index()
+temptrends = dft.groupby(['lat', 'lon']).apply(ut.extract_trend, indicator='temp').reset_index()
 temptrends = temptrends.rename(columns={"constant": "tempconstant",
-                                      "slope": "tempslope",
-                                      "trend": "temptrend"})
+                                        "slope": "tempslope",
+                                        "trend": "temptrend"})

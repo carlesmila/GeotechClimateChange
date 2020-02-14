@@ -6,7 +6,7 @@
 # A folder called "Data" with four files: "air.mon.mean.nc", "basemap.npy", "climatezones.geojson", "countries.geojson"
 # A folder called "Assets" with the file "s1.css"
 # The following scripts: "CheckCachePreprocess.py", "DefineApp.py",
-# "PreprocessTemp.py", "PreprocessUtils.py", "PreprocessCommon.py"
+# "PreprocessTemp.py", "PreprocessPrecip.py", "PreprocessUtils.py", "PreprocessCommon.py"
 
 ## 1. Check cache and preprocess
 # This module checks whether there is an adequate cache stored. If not, it performs pre-processing and stores results
