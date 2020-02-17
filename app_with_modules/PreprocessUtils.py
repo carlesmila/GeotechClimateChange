@@ -8,14 +8,15 @@ import pandas as pd
 
 # Now we define our functions
 def convert_lons(l):
-    """Fixes warped longitudes in the original NetCDF files to WGS84"""
+    """Fixes warped longitudes (0 to 360) in the original NetCDF files to WGS84 (-180 to 180).
+    For those latitudes greater than 180, apply a transformation"""
     if l > 180:
         return l - 360
     else:
         return l
 
 def extract_trend(gdf, indicator): # I need to document
-    """Calculates linear trends using linear regression"""
+    """Calculates linear trends by year using linear regression"""
     # Fit a linear regression with intercept
     mod = sm.OLS(gdf[indicator], sm.add_constant(gdf['year'])).fit()
     # Extract coefficients, intercept and slope
