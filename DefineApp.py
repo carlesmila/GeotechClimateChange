@@ -1,6 +1,7 @@
 #####################################################
 #                    Define app                     #
 #####################################################
+
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output
 import pandas as pd
@@ -18,109 +19,141 @@ countries_data = [go.Scatter( x = poly[0], y = poly[1], mode = 'lines',
 # Query database
 con = sqlite3.connect("Database/database.sqlite")
 df = pd.read_sql_query("SELECT * from TEMPTAB", con)
+df2 = pd.read_sql_query("SELECT * from FIXEDTAB", con)
 con.close()
 
-# this is a pretty container for the layout
+# Creating the layout
 pretty_container={'border-radius': '5px', 'background-color': '#f9f9f9', 'margin': '10px', 'padding': '15px',
                   'position': 'relative', 'box-shadow': '2px 2px 2px lightgrey'}
 
 app = dash.Dash(__name__,  assets_folder='Assets')
 
-# Now we do html.Div (list of things) to setup the layout's elements
 app.layout = html.Div([
     html.Div([
         html.Div([
-            html.H1(['this is the function that makes the title']),
-            html.H2(['this is the title little brother'])
+            html.H3(['Climate change explorer'])
         ], style={'text-align': 'center'})
     ], className='row'),
     dcc.Tabs([
+        # Creating the layout for "Temperature"
         dcc.Tab(label='Temperature', children=[
             html.Div([
-            html.Div([
-            html.Div([html.H3(['this is the title of a pretty graph'])],
-                     className='row', style={'text-align': 'center'}),
-            # html.Div for showing the map
-            html.Div([dcc.Graph(id='raster')],className='row'),
-        ], className='six columns'),
-        # html.Div for showing the line-graph
-        html.Div([
-            html.Div([html.H3(['this is a tiny tiny little title for a raster'])], style={'text-align': 'center'}),
-            dcc.Graph(id='line')
-        ], className='five columns'),
-        html.Div([
-            html.Div([html.H5('Select the year')], className='row', style={'text-align': 'center'}),
-            dcc.Slider(
-                min=1948,
-                max=2019,
-                marks={i: '{}'.format(i) for i in range(1948, 2020, 5)},
-                # we set the default value for the selected year in the slider
-                value=2019,
-                step=1,
-                included=True,
-                id='year_slider'
-                )
-            ],className='row', style={'margin': '15px'})
-     ],className='row',style=pretty_container)
-        ]),
-        dcc.Tab(label='Precipitation', children=[
-            html.Div([
                 html.Div([
-                    html.Div([html.H3(['this is the title of a pretty graph'])],
-                             className='row', style={'text-align': 'center'}),
-                    # html.Div for showing the map
-                    html.Div([dcc.Graph(id='precip_raster')], className='row'),
-                ], className='six columns'),
-                # html.Div for showing the line-graph
+                html.H5(['Select here the location and the year'])
+                ], style={'text-align': 'center'}),
                 html.Div([
-                    html.Div([html.H3(['this is a tiny tiny little title for a raster'])],
-                             style={'text-align': 'center'}),
-                    dcc.Graph(id='precip_line')
-                ], className='five columns'),
-                html.Div([
-                    html.Div([html.H5('Select the year')], className='row', style={'text-align': 'center'}),
+                    html.Div([html.H6(' ')], className='row', style={'text-align': 'center'}),
                     dcc.Slider(
                         min=1948,
                         max=2019,
                         marks={i: '{}'.format(i) for i in range(1948, 2020, 5)},
-                        # we set the default value for the selected year in the slider
+                        value=2019,
+                        step=1,
+                        included=True,
+                        id='year_slider'
+                    )
+                ], className='row', style={'margin': '35px'}),
+                html.Div([
+                    dcc.RadioItems(
+                        id='temp_radio',
+                        options=[
+                            {'label': 'Temperature (°C)', 'value': 'temp'},
+                            {'label': 'Difference from the baseline (°C)', 'value': 'tempanom'},
+                        ],
+                        value='temp',
+                        labelStyle={'display': 'inline-block'},
+                    )
+                ], style={'text-align': 'center'}, className='six columns'),
+                html.Div([
+                    html.Div([
+                    dcc.Graph(id='raster')],className='row')
+                ], className='six columns'),
+
+                html.Div([
+                    html.Div([html.H3(id='location_temp')], style={'text-align': 'center'}),
+                        dcc.Graph(id='line')
+                ], className='five columns')
+            ],className='row',style=pretty_container)
+        ]),
+        # Creating the layout for "Precipitable water"
+        dcc.Tab(label='Precipitable water', children=[
+            html.Div([
+                html.Div([
+                    html.H5(['Select here the location and the year'])
+                ], style={'text-align': 'center'}),
+                html.Div([
+                    html.Div([
+                        html.H5(' ')], className='row',
+                    style={'text-align': 'center'}),
+                    dcc.Slider(
+                        min=1948,
+                        max=2019,
+                        marks={i: '{}'.format(i) for i in range(1948, 2020, 5)},
                         value=2019,
                         step=1,
                         included=True,
                         id='precip_year_slider'
                     )
-                ], className='row', style={'margin': '15px'})
+                ], className='row', style={'margin': '15px'}),
+                html.Div([
+                    html.Div([
+                        dcc.RadioItems(
+                            id='precip_radio',
+                            options=[
+                            {'label': 'Precipitable water (kg/m^2)', 'value': 'precip'},
+                            {'label': 'Difference from the baseline (kg/m^2)', 'value': 'precipanom'},
+                            ],
+                            value='precip',
+                            labelStyle={'display': 'inline-block'}
+                        )
+                    ],style={'text-align': 'center'}),
+                    html.Div([
+                        dcc.Graph(id='precip_raster')],
+                    className='row')
+                ], className='six columns'),
+                html.Div([
+                    html.Div([
+                        html.H3(id='location_precip')],
+                    style={'text-align': 'center'}),
+                        dcc.Graph(id='precip_line')
+                ], className='five columns')
             ], className='row', style=pretty_container)
         ]),
+        # Creating the layout for "About"
         dcc.Tab(label='About', children=[
             html.Div([
-                html.H1(['HERE WE CAN WRITE ABOUT US'])
+                html.H4(['you can define others Div and creating subsections'])
             ])
         ]),
     ])
-])
+], style = {'background-color': '#f9f9f9'})
 
 
-# first callback: temp map
+
+# Callback 1: temperature and variations from the baseline map
 @app.callback(Output('raster','figure'),
-            [Input('year_slider', 'value')])
+            [Input('year_slider', 'value'), Input('temp_radio','value')])
 # defining the function that takes an year and creates a figure
-def raster_plot(chosen_year):
-    raster = df[df.year == chosen_year].sort_values(by=['lat', 'lon'], ascending=True).temp.to_numpy()
+def raster_plot(chosen_year,mode):
+    raster = df[df.year == chosen_year].sort_values(by=['lat', 'lon'], ascending=True)[mode].to_numpy()
     raster = np.reshape(raster, (-1, 144))
     lon = df[df.year == chosen_year].lon.to_numpy()
     lon = np.unique(lon)
     lat = df[df.year == chosen_year].lat.to_numpy()
     lat = np.unique(lat)
+    if mode=='temp':
+        cap = 50
+    else:
+        cap = 4
     data = [go.Contour(
         z=raster,
         x=lon,
         y=lat,
         colorscale="RdBu",
         reversescale=True,
-        zauto=False,  # Eventually we need to change this
-        zmin=-35,  # WE NEED TO CHECK THIS!!
-        zmax=35  # WE NEED TO CHECK THIS!!
+        zauto=False,
+        zmin=-cap,
+        zmax=cap
     )]
     full_data = countries_data + data
     title = 'kinda hot'
@@ -150,53 +183,72 @@ def raster_plot(chosen_year):
     return fig
 
 
-# second callback: temp line-graph
-@app.callback(Output('line','figure'),
+# Callback 2: temperature line-graph
+@app.callback([Output('line','figure'),Output('location_temp','children')],
               [Input('raster', 'clickData'), Input('year_slider', 'value')])
-# setting a default chosen_year
+# Defining the function that takes location and year and outputs temperature line-graph, country and climate
 def update_lines(clickData, chosen_year):
     if not clickData:
         chosen_lon, chosen_lat = -2.5, 37.5
     else:
         chosen_lon, chosen_lat = clickData['points'][0]['x'], clickData['points'][0]['y']
     plot_data = df[(df['lon'] == chosen_lon) & (df['lat'] == chosen_lat)]
-    data = go.Scatter(x=plot_data['year'], y=plot_data['temp'])
-
+    baseline = np.mean(plot_data['temp'][:5])*np.ones(len(plot_data['year']))
+    data = [go.Scatter(x=plot_data['year'],
+                       y=plot_data['temp'],
+                       line=dict(color='royalblue',width=4),
+                       legendgroup = "group",
+                       name = "yearly average temperature (°C)",
+                       mode = "lines",
+                       ),
+            go.Scatter(x=plot_data['year'],
+                       y=plot_data['temp'].rolling(7,center=True).mean(),#rolling average (trende line for non linear data)
+                       line=dict(color='firebrick',width=4),
+                       legendgroup = "group",
+                       name = "rolling average temperature (°C)",
+                       mode = "lines",
+                       ),
+            go.Scatter(x=plot_data['year'],
+                       y=baseline,
+                       line=dict(color='black',dash='dash'),
+                       legendgroup = "group",
+                       name = "baseline temperature (°C)",
+                       mode = "lines",
+                       )] #baseline
     # adding x and y-axis
-    layout = go.Layout(xaxis=dict(title='Years'), yaxis=dict(title='Average Yearly Air temperature ºC'),
-                       template="plotly_white",margin = dict(l=0, b=50, r=0,t=50))
+    layout = go.Layout(
+        xaxis=dict(title='Years'),
+        yaxis=dict(title=' '),
+        template="plotly_white",
+        margin = dict(l=0, b=50, r=0,t=50),
+        showlegend=True)
     fig = go.Figure(data=data,layout=layout)
-
-    # adding layout
-    fig.add_shape(
-        go.layout.Shape(
-            type="line",
-            xref="x",
-            yref="paper",
-            x0=chosen_year,
-            y0=0,
-            x1=chosen_year,
-            y1=1,
-            fillcolor="tomato",
-            opacity=0.5,
-            layer="below",
-            line_width=20
-        )
-    )
-
-    return fig
+    fig.update_layout(legend_orientation="h")
 
 
+    names = df2[(df2['lon'] == chosen_lon) & (df2['lat'] == chosen_lat)]
+    query = f'{names.countryname.values[0]}, {names.climate.values[0]}'
+
+    return fig, query
+
+
+# Callback 3: moisture and variation from the baseline map
 @app.callback(Output('precip_raster','figure'),
-            [Input('precip_year_slider', 'value')])
-# defining the function that takes an year and creates a figure
-def raster_plot(chosen_year):
-    raster = df[df.year == chosen_year].sort_values(by=['lat', 'lon'], ascending=True).precip.to_numpy()
+            [Input('precip_year_slider', 'value'),Input('precip_radio','value')])
+# Defining the function that takes an year and creates a figure
+def raster_plot(chosen_year,mode):
+    raster = df[df.year == chosen_year].sort_values(by=['lat', 'lon'], ascending=True)[mode].to_numpy()
     raster = np.reshape(raster, (-1, 144))
     lon = df[df.year == chosen_year].lon.to_numpy()
     lon = np.unique(lon)
     lat = df[df.year == chosen_year].lat.to_numpy()
     lat = np.unique(lat)
+    if mode=='precip':
+        capmax = 700
+        capmin = 0
+    else:
+        capmax = 150
+        capmin = - 150
     data = [go.Contour(
         z=raster,
         x=lon,
@@ -204,8 +256,8 @@ def raster_plot(chosen_year):
         colorscale="haline",
         reversescale=True,
         #zauto=False,  # Eventually we need to change this
-        #zmin=-35,  # WE NEED TO CHECK THIS!!
-        #zmax=35  # WE NEED TO CHECK THIS!!
+        zmin=capmin,  # WE NEED TO CHECK THIS!!
+        zmax=capmax  # WE NEED TO CHECK THIS!!
     )]
     full_data = countries_data + data
     title = 'kinda hot'
@@ -235,41 +287,47 @@ def raster_plot(chosen_year):
     return fig
 
 
-# second callback: temp line-graph
-@app.callback(Output('precip_line','figure'),
+# Callback 4: moisture line-graph
+@app.callback([Output('precip_line','figure'),Output('location_precip','children')],
               [Input('precip_raster', 'clickData'), Input('precip_year_slider', 'value')])
-# setting a default chosen_year
+# Defining the function that takes location and year and outputs precipitation line-graph, country and climate
 def update_lines(clickData, chosen_year):
     if not clickData:
         chosen_lon, chosen_lat = -2.5, 37.5
     else:
         chosen_lon, chosen_lat = clickData['points'][0]['x'], clickData['points'][0]['y']
     plot_data = df[(df['lon'] == chosen_lon) & (df['lat'] == chosen_lat)]
-    data = go.Scatter(x=plot_data['year'], y=plot_data['precip'])
-
+    baseline = np.mean(plot_data['precip'][:5]) * np.ones(len(plot_data['year']))
+    data = [go.Scatter(x=plot_data['year'],
+                       y=plot_data['precip'],
+                       line=dict(color='royalblue', width=4),
+                       legendgroup = "group",
+                       name = "yearly sum precipitable water (kg/m^2)",
+                       mode = "lines"
+            ),
+            go.Scatter(x=plot_data['year'],
+                       y=plot_data['precip'].rolling(7, center=True).mean(),
+                       # rolling average (trend line for non linear data)
+                       line=dict(color='#F96D15', width=4),
+                       legendgroup = "group",
+                       name = "rolling average precipitable water (kg/m^2)",
+                       mode = "lines"),
+            go.Scatter(x=plot_data['year'],
+                       y=baseline,
+                       line=dict(color='black', dash='dash'),
+                       legendgroup = "group",
+                       name = "baseline precipitable water (kg/m^2)",
+                       mode = "lines")]  # baseline
     # adding x and y-axis
-    layout = go.Layout(xaxis=dict(title='Years'), yaxis=dict(title='Average Yearly Precipitation'),
-                       template="plotly_white",margin = dict(l=0, b=50, r=0,t=50))
-    fig = go.Figure(data=data,layout=layout)
+    layout = go.Layout(xaxis=dict(title='Years'), yaxis=dict(title='Average Yearly Precipitation (mm)'),
+                       template="plotly_white", margin=dict(l=0, b=50, r=0, t=50), showlegend=True)
+    fig = go.Figure(data=data, layout=layout)
+    fig.update_layout(legend_orientation="h")
 
-    # adding layout
-    fig.add_shape(
-        go.layout.Shape(
-            type="line",
-            xref="x",
-            yref="paper",
-            x0=chosen_year,
-            y0=0,
-            x1=chosen_year,
-            y1=1,
-            fillcolor="tomato",
-            opacity=0.5,
-            layer="below",
-            line_width=20
-        )
-    )
+    names = df2[(df2['lon'] == chosen_lon) & (df2['lat'] == chosen_lat)]
+    query = f'{names.countryname.values[0]}, {names.climate.values[0]}'
 
-    return fig
+    return fig, query
 
 
 
