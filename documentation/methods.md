@@ -1,5 +1,7 @@
 # Methods
 
+![alt text](figures/workflow.png)
+
 ## Back-end
 
 ## Front-end
