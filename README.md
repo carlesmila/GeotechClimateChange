@@ -10,3 +10,5 @@ Next steps:
   
   Example with same data:
 http://schubert.atmos.colostate.edu/~cslocum/netcdf_example.html
+
+Important: What is needed to run the app?
