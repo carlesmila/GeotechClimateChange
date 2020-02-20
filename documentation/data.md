@@ -9,5 +9,5 @@ In this project, we used air temperature and precipitable water content monthly 
 Countries' names and climate zones were also used (data were transformed into geojson format) in the application development to provide more information for the user about the location that he/she is consulting. Climate zones were extracted from the Köppen climate classification areas for the period 1970-2000 (data publicly available) as shown in the following figure:
 
 ![alt text](figures/koeppen.jpg)
-
+Figure from: Beck, H., Zimmermann, N., McVicar, T. et al. Present and future Köppen-Geiger climate classification maps at 1-km resolution. Sci Data 5, 180214 (2018). https://doi.org/10.1038/sdata.2018.214
 
