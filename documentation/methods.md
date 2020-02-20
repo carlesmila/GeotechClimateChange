@@ -1,6 +1,6 @@
 # Methods
 
-![alt text](https://github.com/carlesmila/GeotechClimateChange/tree/master/figures/workflow.png?raw=true)
+![alt text](figures/workflow.png?raw=true)
 
 ## Back-end
 
