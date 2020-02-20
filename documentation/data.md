@@ -6,4 +6,7 @@ The climate dataset to be used in this project is developed by National Oceanic 
 In this project, we used air temperature and precipitable water content monthly data. Temperature data was aggregated into yearly averages and monthly precipitable water was summed into yearly indicators during pre-processing in order to condense the information for the application user.
 
 ## Auxiliary data
-Countries' names and climate zones were also used (data were transformed into geojson format) in the application development to provide more information for the user about the location that he/she is consulting. Climate zones were extracted from the Köppen climate classification areas for the period 1970-2000 (data publicly available).
+Countries' names and climate zones were also used (data were transformed into geojson format) in the application development to provide more information for the user about the location that he/she is consulting. Climate zones were extracted from the Köppen climate classification areas for the period 1970-2000 (data publicly available) as shown in the following figure:
+![alt text](figures/koeppen.jpg)
+
+
