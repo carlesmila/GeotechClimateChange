@@ -1,10 +1,11 @@
 # Methods
 
+We structured our app as indicated in the following figure. Every step in this flowchart was written as a separate python module:
 ![alt text](figures/workflow.png?raw=true)
 
-## Back-end
+## Backend
 
-## Front-end
+## Frontend
 
 ## Deployment
 The application was deployed using PythonAnywhere, an online development and web hosting service that uses Python programming language. Within PythonAnywhere webpage, it is possible to create a virtual environment using Python version 3.7 (or other version) and install all the dependencies the application requires to run. The Python Web Framework used for this app was Flask. After uploading all files (data and codes) to the website platform, the working directory was set as well as the server details through the Web Server Gateway Interface (WSGI) configuration file.
