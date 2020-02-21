@@ -25,9 +25,10 @@ As mentioned above, our app is openly available at [http://climatechanges.python
 
 To run the app in your local environment, please follow these steps.
 1. Download the repository.
-2. Place the downloaded files in the following folders:
-  * If the sqlite database has been downloaded, place it in the folder "Database" in the repository.
-  * If the raw data files have been downloaded, place them in the folder "Data" in the repository.
+2. Place the downloaded files in the corresponding folder within the repository:
+
+   * If the sqlite database has been downloaded, place it in the folder "Database" in the repository.
+   * If the raw data files have been downloaded, place them in the folder "Data" in the repository.
 3. Run the file "app.py".
 
 We kindly suggest to use the pycharm IDE tu run the app.
