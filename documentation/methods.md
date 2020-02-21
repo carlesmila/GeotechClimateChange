@@ -1,9 +1,13 @@
 # Methods
 
-We structured our app as indicated in the following figure. Every step in this flowchart was written as a separate python module:
+We structured our app as indicated in the following figure:
 ![alt text](figures/workflow.png?raw=true)
 
+The root script of our app, which is needed to execute to run the application is structured in three blocks. First, it calls the preprocessing (backend) module, then calls the layout and callback module (frontend), and finally runs the app. In the following subsections each of these steps will be explained in detail.
+
 ## Backend
+
+The first step in the backend is to check whether a cache for the app exists, i.e. whether a sqlite with the data needed to run the app exists. If the answer this logical operation is positive, then all preprocessing (backend) modules are skipped and we jump into the frontend definition. If, however, it is not, they do need to be run. The motivation behind the cache is to avoid unnecessary processing when running the app while also considering updates in the database when new data are available. The code of this part is available [here]().
 
 ## Frontend
 
