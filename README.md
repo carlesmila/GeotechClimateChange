@@ -6,7 +6,7 @@ To answer this need, the objective this project is to develop a webGIS portal to
 1. Spatiotemporal visualization of global temperature and precipitation data.
 2. Time series temperature and precipitation visualization of a user-selected location.
 
-Our developped tool, which we named the **Climage Change explorer** is openly available at [http://climatechanges.pythonanywhere.com](http://climatechanges.pythonanywhere.com). This repository contains the code necessary to build the app.
+Our developped tool, which we named the **Climage Change explorer**, is openly available at [http://climatechanges.pythonanywhere.com](http://climatechanges.pythonanywhere.com). This repository contains the code necessary to build the app.
 
 ## Data and methods of the project
 
