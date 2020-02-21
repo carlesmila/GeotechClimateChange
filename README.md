@@ -39,6 +39,10 @@ The Climate Change explorer app is structured in 3 tabs: temperature, precipitab
 
 ![alt text](documentation/figures/appoverview.png?raw=true)
 
+## Disclaimer
+
+This project was done within the GPS group project class of the Master in Geospatial Technologies (Winter term 2019/2020) of the NOVA Information Management School of Lisbon by the students Carles Milà, Giula Molisse and Pablo Cruz. This is therefore an educational exercise that would need further proofing in case the app were to be launched into the general public.
+
 ## References
 
 Allen, M.R., O.P. Dube, W. Solecki, F. Aragón-Durand, W. Cramer, S. Humphreys, M. Kainuma, J. Kala, N. Mahowald, Y. Mulugetta, R. Perez, M. Wairiu, and K. Zickfeld, 2018: Framing and Context. In: _Global Warming of 1.5°C. An IPCC Special Report on the impacts of global warming of 1.5°C above pre-industrial levels and related global greenhouse gas emission pathways, in the context of strengthening the global response to the threat of climate change, sustainable development, and efforts to eradicate poverty_. In Press.
