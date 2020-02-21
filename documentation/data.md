@@ -6,7 +6,10 @@ The climate dataset to be used in this project is developed by National Oceanic 
 
 In this project, we used air temperature and precipitable water content monthly data. Temperature data was aggregated into yearly averages and monthly precipitable water was summed into yearly indicators during pre-processing in order to condense the information for the application user.
 
-**HERE MORE INFO ABOUT THE TWO VARIABLES WE ANALYSE.**
+#### Data Variables
+The variable "**Air Temperature**" provides values for the surface or near the surface (0.995 sigma) level, the data is originally structured in monthly means and its unit is Celsius degree.
+
+"**Preciptable Water Content**" values refers to the depth of water in a column of atmosphere, the values are given in kg/m^2. It does *not* represent the amount of precipitation in a given region, but the water available for potential (but not certain) rainfall.
 
 ## Auxiliary data
 
