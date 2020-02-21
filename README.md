@@ -31,7 +31,7 @@ To run the app in your local environment, please follow these steps.
    * If the raw data files have been downloaded, place them in the folder "Data" in the repository.
 3. Run the file "app.py".
 
-We kindly suggest to use the pycharm IDE tu run the app.
+We kindly suggest to use the pycharm IDE to run the app.
 
 ## App functionality
 
