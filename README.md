@@ -1,6 +1,11 @@
 # Group project: Climate Change
 
-Short intro. Why this project?
-Short methods. 
-Front-end preview.
-How to run the app?
+Climage change explorer is available at [http://climatechanges.pythonanywhere.com](http://climatechanges.pythonanywhere.com).
+
+## Short intro. Why this project?
+
+## Short methods and data. 
+
+## How to run the app?
+
+app preview?
