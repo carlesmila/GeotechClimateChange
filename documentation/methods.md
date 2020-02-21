@@ -11,6 +11,8 @@ The first step in the backend is to check whether a cache for the app exists, i.
 
 ## Frontend
 
+Link to frontend [here](https://github.com/carlesmila/GeotechClimateChange/blob/master/DefineApp.py).
+
 ## Deployment
 The application was deployed using PythonAnywhere, an online development and web hosting service that uses Python programming language. Within PythonAnywhere webpage, it is possible to create a virtual environment using Python version 3.7 (or other version) and install all the dependencies the application requires to run. The Python Web Framework used for this app was Flask. After uploading all files (data and codes) to the website platform, the working directory was set as well as the server details through the Web Server Gateway Interface (WSGI) configuration file.
 
