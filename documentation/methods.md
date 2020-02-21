@@ -15,11 +15,11 @@ The same steps were also performed for precipitable water, except for the fact t
 
 The next step was to extract time-invariant additional information at the pixel level, namely the country and climate that corresponded to each pixel. To do so, the coordinate grid was converted into a geopandas object, and we performed spatial join to extract the country names and climate zone using auxiliary polygon data. For areas with no country/climate area, the pixel was labelled to be water body. The resulting data was stored in a pandas dataframe indexed by the pixel coordinates (i.e. one row per pixel). The code of this model is available in the [PreprocessCommon.py](https://github.com/carlesmila/GeotechClimateChange/blob/master/PreprocessCommon.py) script.
 
-The last step in the preprocessing was to group all the data into two different pandas tables. The first table was indexed by the pixel coordinates (lon, lat) and time, and contained temperature, precipitable water, and deviations from the respective baselines. The second table was indexed by the coordinates (lon, lat), and contained the country, climate area, and temperature and precipitable water of each pixel. These two tables are then stored into an sqlite database that will be read in the frontend. This module is avaiable in the last part of the [CheckCachePreprocess.py](https://github.com/carlesmila/GeotechClimateChange/edit/master/documentation/methods.md) script.
+The last step in the preprocessing was to group all the data into two different pandas tables. The first table was indexed by the pixel coordinates (lon, lat) and time, and contained temperature, precipitable water, and deviations from the respective baselines. The second table was indexed by the coordinates (lon, lat), and contained the country, climate area, and temperature and precipitable water of each pixel. These two tables are then stored into an sqlite database that will be read in the frontend. This module is available in the last part of the [CheckCachePreprocess.py](https://github.com/carlesmila/GeotechClimateChange/edit/master/documentation/methods.md) script.
 
 ## Frontend
 
-Link to frontend [here](https://github.com/carlesmila/GeotechClimateChange/blob/master/DefineApp.py).
+Link to frontend is in [DefineApp.py](https://github.com/carlesmila/GeotechClimateChange/blob/master/DefineApp.py).
 
 ## Deployment
 
