@@ -26,3 +26,9 @@ HERE THE STEPS.
 The Climate Change explorer app is structured in two side by side panels (on different tabs for temperature and precipitable water). In the left panel, the user can visualize the spatial distribution of the variable for a given year, or can otherwise select to visualize the difference with respect to the baseline level (mean values between 1948-1952). When clicking on a specific location on the map, the time series plot on the right is updated to the selected location, showing the country, climate area, temperature profile and moving average (7 years). A preview of the app is available in the following figure:
 
 ![alt text](documentation/figures/appoverview.png?raw=true)
+
+## References
+
+Allen, M.R., O.P. Dube, W. Solecki, F. Aragón-Durand, W. Cramer, S. Humphreys, M. Kainuma, J. Kala, N. Mahowald, Y. Mulugetta, R. Perez, M. Wairiu, and K. Zickfeld, 2018: Framing and Context. In: _Global Warming of 1.5°C. An IPCC Special Report on the impacts of global warming of 1.5°C above pre-industrial levels and related global greenhouse gas emission pathways, in the context of strengthening the global response to the threat of climate change, sustainable development, and efforts to eradicate poverty_. In Press.
+
+Lee, T., Markowitz, E., Howe, P. et al. _Predictors of public climate change awareness and risk perception around the world_. Nature Clim Change 5, 1014–1020 (2015). https://doi.org/10.1038/nclimate2728
