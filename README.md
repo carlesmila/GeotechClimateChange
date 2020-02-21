@@ -16,10 +16,17 @@ Our app was coded in python and was structured in three blocks: backend, fronten
 
 ## How can I run the app?
 
-As mentioned above, our app is openly available at [http://climatechanges.pythonanywhere.com](http://climatechanges.pythonanywhere.com). For those users that want to built on the app or simply have their own build, these are the steps that need to be taken:
+As mentioned above, our app is openly available at [http://climatechanges.pythonanywhere.com](http://climatechanges.pythonanywhere.com). For those users that want to built on the app or simply have their own build, these are the requirements:
+* Python 3.7 or later
+* The following modules installed: sqlite3, os, pandas, geopandas, netCDF4, statsmodels.api, plotly, numpy, dash, dash_html_components, dash_core_components
+* A valid sqlite with the parsed data that can be dowloaded from [here]() **NEED TO UPDATE!**.
 
-HERE THE STEPS.
+To run the app in your local environment, please follow these steps.
+1. Download the repository.
+2. Place the downloaded sqlite database within the folder "Database" in the repository.
+3. Run the file "app.py"
 
+We kindly suggest to use the pycharm IDE tu run the app.
 
 ## App functionality
 
