@@ -2,8 +2,6 @@
 
 Climage change explorer is available at [http://climatechanges.pythonanywhere.com](http://climatechanges.pythonanywhere.com).
 
-## Short intro. Why this project?
-
 ## Short methods and data. 
 
 ## How to run the app?
