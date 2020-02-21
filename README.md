@@ -8,11 +8,11 @@ To answer this need, the objective this project is to develop a webGIS portal to
 
 Our developped tool, which we named the **Climage Change explorer** is openly available at [http://climatechanges.pythonanywhere.com](http://climatechanges.pythonanywhere.com). This repository contains the code necessary to build the app.
 
-## Data and methods 
+## Data and methods of the project
 
-WE NEED TO COMPLETE 
+We used the National Oceanic and Atmospheric Administration (NOAA) CNEP/NCAR Reanalysis 1 temperature and precipitable water gridded dataset (1948-2019), which we aggregated at the yearly level. Country boundaries and Köppen-Geiger climate areas were used as auxiliary data. Further information of the data sources and characteristics is available in the [data project documentation](https://github.com/carlesmila/GeotechClimateChange/blob/master/documentation/data.md).
 
-Further information of the data sources and characteristics is available in the [data project documentation](https://github.com/carlesmila/GeotechClimateChange/blob/master/documentation/data.md). A detailed description of the project methods is available in the [methods project documentation](https://github.com/carlesmila/GeotechClimateChange/blob/master/documentation/methods.md).
+Our app was coded in python and was structured in three blocks: backend, frontend and deployment. Briefly, the backend performs a cache check and constructs the sqlite database needed to run the app, and it is structured in a series of python modules. The fronted block is written in Dash and defines the layout and the callbacks of the app. Finally, the app was deployed in an open __PythonAnywhere__ server. A detailed description of the project methods is available in the [methods project documentation](https://github.com/carlesmila/GeotechClimateChange/blob/master/documentation/methods.md).
 
 ## How can I run the app?
 
