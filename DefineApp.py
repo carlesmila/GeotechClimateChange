@@ -232,7 +232,7 @@ def update_lines(clickData, chosen_year):
     return fig, query
 
 
-# Callback 3: moisture and variation from the baseline map
+# Callback 3: precipitable water and difference from the baseline map
 @app.callback(Output('precip_raster','figure'),
             [Input('precip_year_slider', 'value'),Input('precip_radio','value')])
 # Defining the function that takes an year and creates a figure
@@ -287,10 +287,10 @@ def raster_plot(chosen_year,mode):
     return fig
 
 
-# Callback 4: moisture line-graph
+# Callback 4: precipitable water line-graph
 @app.callback([Output('precip_line','figure'),Output('location_precip','children')],
               [Input('precip_raster', 'clickData'), Input('precip_year_slider', 'value')])
-# Defining the function that takes location and year and outputs precipitation line-graph, country and climate
+# Defining the function that takes location and year and outputs precipitable water line-graph, country and climate
 def update_lines(clickData, chosen_year):
     if not clickData:
         chosen_lon, chosen_lat = -2.5, 37.5
