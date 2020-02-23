@@ -41,7 +41,7 @@ The Climate Change explorer app is structured in 3 tabs: temperature, precipitab
 
 ## Disclaimer
 
-This project was done within the GPS group project class of the Master in Geospatial Technologies (Winter term 2019/2020) of the NOVA Information Management School of Lisbon by the students Carles Milà, Giula Molisse and Pablo Cruz. This is therefore an educational exercise that would need further proofing in case the app were to be launched into the general public.
+This project was done within the GPS group project class of the Master in Geospatial Technologies (Winter term 2019/2020) of the NOVA Information Management School of Lisbon by the students Carles Milà, Giulia Molisse and Pablo Cruz. This is therefore an educational exercise that would need further proofing in case the app were to be launched into the general public.
 
 ## References
 
