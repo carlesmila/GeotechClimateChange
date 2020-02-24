@@ -19,7 +19,28 @@ The last step in the preprocessing is to group all the data into two different p
 
 ## Frontend
 
-Link to frontend is in [DefineApp.py](https://github.com/carlesmila/GeotechClimateChange/blob/master/DefineApp.py).
+Given our previously defined objectives, what we needed was a library able to visualize data create interactive plots. To do so, for frontend we decided to use Plotly and Dash.
+Plotly is both a company and an open source library that focuses on visualizations as .html files, however, it does not allow to connect our plots to changing data sources and comes with the limitation to re-run the .py script and re-generate the .html file to see any updates. What we needed for this app were plots able to interact with each other and to update in real time; to do so an interactive dashboard was the best option. Dash is a step beyond what Plotly can provide for us. It is a library from the Plotly company that, instead of a .html file, produces a dashboard web application at a local URL, all this using purely Python, since most .html tags are provided as Python classes. Implementing such solution, we were able to deploy our dashboard online for the public to use.
+
+Let’s have a closer look to the way our frontend is organized.
+As mentioned in previous sections, the entire process was carried out using PyCharm Python IDE. We started off by importing all the needed modules (pandas, plotly.graph_objs, numpy, dash, dash.dependencies, dash_html_components, dash_core_components and sqlite3) and querying our database; at this point, the actual frontend (Link to frontend is in [DefineApp.py](https://github.com/carlesmila/GeotechClimateChange/blob/master/DefineApp.py).) was divided into 2 sections:
+1.	Creating the layout
+2.	Creating four callbacks
+Through the layout section we describe where our visualizations inside the application are going to be. To do so, we defined html division using dash html components as well as more complex elements such as tabs, slider and radio items using dash core components.
+Our layout is composed of three tabs (“Temperature”, “Precipitable water” and “About”), where the last one is defined by a simple markdown, while the first two have a more complex structure that we are now going to briefly explain.
+Inside the “Temperature” tab, we inserted:
+•	a title, defining the instructions for the user
+•	a slider, allowing the user to select a preferred year
+•	a radio item element, allowing to choose which variable the user wants to visualize (yearly average temperatures or difference from a baseline)
+•	a map with its legend, in a form of a raster graph, displaying the chosen variable
+•	a line graph with its legend, showing on the x-axis the year and on the y-axis the chosen variable
+The same schema was used for the “Precipitable water” tab.
+
+Once the layout was set, we created a few callbacks in order to define the interactive part of our application. For both “Temperature” and “Precipitable water”, 2 callbacks were created.
+•	The first callback has the purpose of, as an output, updating the figure displayed onto the raster graph created using Plotly (placed on the left-hand side or our layout) by taking as inputs the year selected from the slider as well as the variable chosen from the radio items element.
+
+•	The second callback was created so as to update the line graph placed on the right-hand side of our layout, taking as inputs the year selected from the slider as well as the coordinates (clickData) defining the location clicked by the user. For this second callback, we defined as outputs both the line graph as well as showing the country name and climate zone of the selected location.
+
 
 ## Deployment
 
