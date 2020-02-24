@@ -19,7 +19,7 @@ The last step in the preprocessing is to group all the data into two different p
 
 ## Frontend
 
-Given our previously defined objectives, what we needed was a library able to visualize data and create interactive plots. To do so, we decided to implement Plotly and Dash for building our frontend.
+Given our previously defined objectives, what we needed was a library able to visualize data and create interactive plots. To do so, we decided to implement Plotly and Dash to build our frontend.
 
 Plotly is both a company and an open source library that focuses on visualizations as .html files, however, it does not allow to connect our plots to changing data sources and comes with the limitation to re-run the .py script and re-generate the .html file to see any updates. What we needed for this app were plots able to interact with each other and to update in real time; to do so, an interactive dashboard was the best option. 
 Dash is a step beyond what Plotly can provide for us. It is a library from the Plotly company that, instead of a .html file, produces a dashboard web application at a local URL, by coding purely in Python, since most .html tags are provided as Python classes. Implementing such solution, we were able to deploy our dashboard online for the public to use.
