@@ -26,7 +26,7 @@ Let’s have a closer look to the way our frontend is organized.
 As mentioned in previous sections, the entire process was carried out using PyCharm Python IDE. We started off by importing all the needed modules (pandas, plotly.graph_objs, numpy, dash, dash.dependencies, dash_html_components, dash_core_components and sqlite3) and querying our database; at this point, the actual frontend ([DefineApp.py](https://github.com/carlesmila/GeotechClimateChange/blob/master/DefineApp.py).) was divided into 2 sections:
 
 1.	Creating the layout
-2.	Creating four callbacks
+2.	Creating 4 callbacks
 
 Through the layout section we describe where our visualizations inside the application are going to be. To do so, we defined html division using dash html components as well as more complex elements such as tabs, slider and radio items using dash core components.
 Our layout is composed of three tabs (“Temperature”, “Precipitable water” and “About”), where the last one is defined by a simple markdown, while the first two have a more complex structure that we are now going to briefly explain.
@@ -45,6 +45,7 @@ Once the layout was set, we created a few callbacks in order to define the inter
 
 -	The second callback was created so as to update the line graph placed on the right-hand side of our layout, taking as inputs the year selected from the slider as well as the coordinates (clickData) defining the location clicked by the user. For this second callback, we defined as outputs both the line graph as well as showing the country name and climate zone of the selected location.
 
+The same schema was used for the “Precipitable water” tab.
 
 ## Deployment
 
