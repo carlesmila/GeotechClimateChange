@@ -28,6 +28,9 @@ pretty_container={'border-radius': '5px', 'background-color': '#f9f9f9', 'margin
 
 app = dash.Dash(__name__,  assets_folder='Assets')
 
+##Configuring Server
+server=app.server
+
 app.layout = html.Div([
     html.Div([
         html.Div([
@@ -122,7 +125,31 @@ app.layout = html.Div([
         # Creating the layout for "About"
         dcc.Tab(label='About', children=[
             html.Div([
-                html.H4(['you can define others Div and creating subsections'])
+                 html.H4([dcc.Markdown('''
+## **Implementing a GIS web app for climate change awareness**
+
+According to the United Nations Intergovernmental Panel on Climate Change (IPCC), human-induced climate warming is estimated to be between 0.8°C and 1.2°C compared to pre-industrial levels (Allen et al, 2018). In spite of the severe consequences of climate change and its overwhelmingly scientific consensus, parts of the society still do not acknowledge its importance (Lee et al, 2015). We hypothesise that part of this issue is because a majority of the worldwide population do not have access to climate change reports, and so we think it is necessary to develop engaging solutions and tools to raise social awareness about climate change.
+
+
+To answer this need, the objective of this project is to develop a webGIS portal to raise climate change awareness with the following capabilities:
+
+
+* Spatiotemporal visualization of global temperature and precipitation data.
+* Time series temperature and precipitation visualization of a user-selected location.
+
+
+
+### App functionality
+The Climate Change explorer app is structured in 3 tabs: temperature, precipitable water, and about. The temperature and precipitable water tabs consist of two side by side panels. In the left panel, the user can visualize the spatial distribution of the variable for a given year, or can otherwise select to visualize the difference with respect to the baseline level (mean values between 1948-1952). When clicking on a specific location on the map, the time series plot on the right is updated to the selected location, showing the country, climate area, temperature profile and moving average (7 years).
+
+
+
+### Disclaimer
+
+This project was done within the GPS group project class of the Master in Geospatial Technologies (Winter term 2019/2020) of the NOVA Information Management School of Lisbon by the students Carles Milà, Giulia Molisse and Pablo Cruz. This is therefore an educational exercise that would need further proofing in case the app were to be launched into the general public.
+
+For more detailed information and documentation, check our [GitHub Repository](https://github.com/carlesmila/GeotechClimateChange).
+''' )                    ])
             ])
         ]),
     ])
@@ -232,7 +259,7 @@ def update_lines(clickData, chosen_year):
     return fig, query
 
 
-# Callback 3: precipitable water and difference from the baseline map
+# Callback 3: moisture and variation from the baseline map
 @app.callback(Output('precip_raster','figure'),
             [Input('precip_year_slider', 'value'),Input('precip_radio','value')])
 # Defining the function that takes an year and creates a figure
@@ -287,7 +314,7 @@ def raster_plot(chosen_year,mode):
     return fig
 
 
-# Callback 4: precipitable water line-graph
+# Callback 4: moisture line-graph
 @app.callback([Output('precip_line','figure'),Output('location_precip','children')],
               [Input('precip_raster', 'clickData'), Input('precip_year_slider', 'value')])
 # Defining the function that takes location and year and outputs precipitable water line-graph, country and climate
@@ -319,7 +346,7 @@ def update_lines(clickData, chosen_year):
                        name = "baseline precipitable water (kg/m^2)",
                        mode = "lines")]  # baseline
     # adding x and y-axis
-    layout = go.Layout(xaxis=dict(title='Years'), yaxis=dict(title='Average Yearly Precipitation (mm)'),
+    layout = go.Layout(xaxis=dict(title='Years'), yaxis=dict(title='Average Yearly Precipitable (mm)'),
                        template="plotly_white", margin=dict(l=0, b=50, r=0, t=50), showlegend=True)
     fig = go.Figure(data=data, layout=layout)
     fig.update_layout(legend_orientation="h")
