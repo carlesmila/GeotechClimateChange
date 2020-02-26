@@ -10,7 +10,7 @@ Our developped tool, which we named the **Climage Change explorer**, is openly a
 
 ## Data and methods of the project
 
-We used the National Oceanic and Atmospheric Administration (NOAA) CNEP/NCAR Reanalysis 1 temperature and precipitable water gridded dataset (1948-2019), which we aggregated at the yearly level. Country boundaries and Köppen-Geiger climate areas were used as auxiliary data. Further information of the data sources and characteristics is available in the [data project documentation](https://github.com/carlesmila/GeotechClimateChange/blob/master/documentation/data.md).
+We used the National Oceanic and Atmospheric Administration (NOAA) NCEP/NCAR Reanalysis 1 temperature and precipitable water gridded dataset (1948-2019), which we aggregated at the yearly level. Country boundaries and Köppen-Geiger climate areas were used as auxiliary data. Further information of the data sources and characteristics is available in the [data project documentation](https://github.com/carlesmila/GeotechClimateChange/blob/master/documentation/data.md).
 
 Our app was coded in python and was structured in three blocks: backend, frontend and deployment. Briefly, the backend performs a cache check and constructs the sqlite database needed to run the app, and it is structured in a series of python modules. The fronted block is written using _Dash_ and defines the layout and the callbacks of the app. Finally, the app is deployed in an open _PythonAnywhere_ server. A detailed description of the project methods is available in the [methods project documentation](https://github.com/carlesmila/GeotechClimateChange/blob/master/documentation/methods.md).
 
